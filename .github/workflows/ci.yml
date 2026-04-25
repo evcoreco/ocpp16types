@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.8'
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Run staticcheck
+        uses: dominikh/staticcheck-action@v1
+        with:
+          version: latest
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+
+      - name: Run unit tests with coverage
+        run: |
+          mkdir -p reports
+          go test -mod=readonly \
+            -coverpkg=$(go list ./... | grep -v -e /tests -e tests_ | tr '\n' ',' | sed 's/,$//') \
+            -coverprofile=reports/coverage.out \
+            -v ./...
+
+      - name: Run example tests
+        run: go test -mod=readonly -v -run '^Example' ./...
+
+      - name: Run race detector
+        run: go test -race ./...
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          files: reports/coverage.out
+          fail_ci_if_error: false

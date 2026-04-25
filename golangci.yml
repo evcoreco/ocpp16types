@@ -1,0 +1,53 @@
+version: "2"
+
+linters:
+  enable:
+    # Bug detection
+    - errcheck
+    - errorlint
+    - exhaustive
+    - copyloopvar
+    - nilerr
+    - nilnil
+
+    # Style & code quality
+    - asciicheck
+    - dupword
+    - errname
+    - gocritic
+    - godoclint
+    - misspell
+    - modernize
+    - nolintlint
+    - recvcheck
+    - revive
+    - whitespace
+
+    # Performance
+    - perfsprint
+    - unconvert
+    - usestdlibvars
+    - wastedassign
+
+    # Security
+    - gosec
+
+    # Static analysis
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+    # Testing
+    - thelper
+
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+        disabled: false
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
