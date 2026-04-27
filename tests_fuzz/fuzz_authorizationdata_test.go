@@ -5,7 +5,7 @@ package testsfuzz
 import (
 	"testing"
 
-	st "github.com/aasanchez/ocpp16types"
+	st "github.com/evcoreco/ocpp16types"
 )
 
 func FuzzAuthorizationData(f *testing.F) {

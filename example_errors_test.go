@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	st "github.com/aasanchez/ocpp16types"
+	st "github.com/evcoreco/ocpp16types"
 )
 
 func ExampleErrEmptyValue() {

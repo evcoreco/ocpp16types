@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	st "github.com/aasanchez/ocpp16types"
+	st "github.com/evcoreco/ocpp16types"
 )
 
 // Benchmarks are opt-in; run with `make test-bench`.

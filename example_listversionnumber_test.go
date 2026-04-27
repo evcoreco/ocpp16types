@@ -3,7 +3,7 @@ package ocpp16types_test
 import (
 	"fmt"
 
-	st "github.com/aasanchez/ocpp16types"
+	st "github.com/evcoreco/ocpp16types"
 )
 
 func ExampleNewListVersionNumber() {

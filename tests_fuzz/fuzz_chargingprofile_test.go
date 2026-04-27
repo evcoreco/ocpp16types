@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	st "github.com/aasanchez/ocpp16types"
+	st "github.com/evcoreco/ocpp16types"
 )
 
 func FuzzChargingProfile(f *testing.F) {
