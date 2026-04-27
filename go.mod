@@ -1,3 +1,3 @@
 module github.com/aasanchez/ocpp16types
 
-go 1.23
+go 1.25
