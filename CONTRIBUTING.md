@@ -4,7 +4,7 @@ Thanks for your interest in improving `ocpp16types`.
 
 ## Quick start
 
-- Install prerequisites (see `AGENTS.md`).
+- Install prerequisites: `golangci-lint`, `staticcheck`, `gci`, `gofumpt`, `golines`, `pkgsite`.
 - Run formatting and quality checks before opening a PR:
   - `make format`
   - `make lint`
@@ -23,7 +23,7 @@ When changing validation or type definitions, include:
 
 ### Adding new public API
 
-- Add public API tests in `tests/` subdirectory using `package ocpp16types_test`.
+- Add public API tests alongside source files using `package ocpp16types_test`.
 - Add examples only when they improve discoverability.
 - Follow the constructor + validation pattern (`New*`).
 
@@ -49,4 +49,5 @@ This repo has opt-in suites that run weekly in CI and on demand locally:
 
 ## Code of Conduct
 
-This project follows `CODE_OF_CONDUCT.md`.
+Be professional and constructive in all interactions. Contributions are reviewed
+collaboratively — keep feedback focused on the code, not the contributor.

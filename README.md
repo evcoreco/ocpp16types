@@ -11,7 +11,7 @@ Strictly validated Go types for the **Open Charge Point Protocol (OCPP) 1.6** sp
 
 ## Requirements
 
-- Go **1.23** or later
+- Go **1.25** or later
 
 ## Installation
 
@@ -88,8 +88,8 @@ All enumerations expose an `IsValid() bool` method and a `String() string` metho
 
 | Type | Description | Pattern |
 |------|-------------|---------|
-| `IdToken` | Identifier token wrapping `CiString20Type` | Constructor |
-| `IdTagInfo` | Authorization info (status + optional expiry/parent) | Constructor + builder (`WithExpiryDate`, `WithParentIdTag`) |
+| `IDToken` | Identifier token wrapping `CiString20Type` | Constructor |
+| `IDTagInfo` | Authorization info (status + optional expiry/parent) | Constructor + builder (`WithExpiryDate`, `WithParentIDTag`) |
 | `SampledValue` | Single meter value sample with optional context metadata | Constructor |
 | `MeterValue` | Timestamped meter reading containing sampled values | Constructor |
 | `ChargingSchedulePeriod` | Single period within a charging schedule | Constructor |
@@ -125,23 +125,24 @@ fmt.Println(status.IsValid()) // true
 fmt.Println(status.String())  // "Accepted"
 ```
 
-### Building an IdTagInfo with Optional Fields
+### Building an IDTagInfo with Optional Fields
 
 ```go
 dt, _ := types.NewDateTime("2026-12-31T23:59:59Z")
-parent, _ := types.NewIdToken("ParentTag001")
+parentStr, _ := types.NewCiString20Type("ParentTag001")
+parent := types.NewIDToken(parentStr)
 
-info, err := types.NewIdTagInfo(types.AuthorizationStatusAccepted)
+info, err := types.NewIDTagInfo(types.AuthorizationStatusAccepted)
 if err != nil {
     log.Fatal(err)
 }
 
 info = info.
     WithExpiryDate(dt).
-    WithParentIdTag(parent)
+    WithParentIDTag(parent)
 
 fmt.Println(info)
-// IdTagInfo{Status: Accepted, ExpiryDate: 2026-12-31T23:59:59Z, ParentIdTag: ParentTag001}
+// IDTagInfo{Status: Accepted, ExpiryDate: 2026-12-31T23:59:59Z, ParentIDTag: ParentTag001}
 ```
 
 ### Error Handling with Sentinel Errors
@@ -176,7 +177,7 @@ func Req(input ReqInput) (ReqMessage, error) {
         return ReqMessage{}, fmt.Errorf("idTag: %w", err)
     }
 
-    idToken := types.NewIdToken(str)
+    idToken := types.NewIDToken(str)
 
     return ReqMessage{IdTag: idToken}, nil
 }
@@ -196,7 +197,7 @@ type ConfMessage struct {
 
 func Conf(input ConfInput) (ConfMessage, error) {
     // Validate status (required)
-    info, err := types.NewIdTagInfo(
+    info, err := types.NewIDTagInfo(
         types.AuthorizationStatus(input.Status),
     )
     if err != nil {
@@ -217,7 +218,7 @@ func Conf(input ConfInput) (ConfMessage, error) {
         if err != nil {
             return ConfMessage{}, fmt.Errorf("parentIdTag: %w", err)
         }
-        info = info.WithParentIdTag(types.NewIdToken(ciStr))
+        info = info.WithParentIDTag(types.NewIDToken(ciStr))
     }
 
     return ConfMessage{IdTagInfo: info}, nil
@@ -288,7 +289,6 @@ ocpp16types/
 ├── codecov.yml           # Coverage thresholds
 ├── CONTRIBUTING.md       # Contribution guidelines
 ├── CLA.md                # Contributor License Agreement
-├── MIGRATION.md          # Migration guide from embedded types
 └── LICENSE               # MIT
 ```
 

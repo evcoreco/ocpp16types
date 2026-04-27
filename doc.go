@@ -1,33 +1,63 @@
-// Package ocpp16types provides Open Charge Point Protocol (OCPP) 1.6
-// core data types with strict validation for EV charging systems.
+// Package ocpp16types provides strictly validated Go types for the
+// Open Charge Point Protocol (OCPP) 1.6 specification.
 //
-// This package implements validated types for the OCPP 1.6 protocol including:
-//   - CiString types: case-insensitive strings with maximum length constraints
-//     (CiString20Type, CiString25Type, CiString50Type,
-//     CiString255Type, CiString500Type)
-//   - DateTime: RFC3339-compliant timestamps that must already be UTC
-//   - Integer: validated uint16 values (0–65535)
+// Every type is validated at construction time: if a constructor returns
+// without error, the value is guaranteed to be spec-compliant.
+// All types are immutable, thread-safe, and depend only on the Go
+// standard library.
 //
-// Enumeration types:
-//   - AuthorizationStatus, ChargePointErrorCode, ChargePointStatus
-//   - ChargingProfilePurposeType, ChargingRateUnit
-//   - Location, Measurand, Phase, ReadingContext
-//   - RegistrationStatus, StopReason, UnitOfMeasure, ValueFormat
+// # Value types
 //
-// Composite types:
-//   - IDToken: wrapper around CiString20Type for identifier tokens
-//   - IDTagInfo: authorization information with builder
-//     pattern for optional fields
-//   - SampledValue: single meter value sample with optional context metadata
-//   - MeterValue: timestamped meter reading with sampled values
-//   - AuthorizationData: entry in the local authorization list
-//   - KeyValue: configuration key-value pair
-//   - ChargingSchedulePeriod: single period within a charging schedule
-//   - ChargingSchedule: schedule for charging with rate unit and periods
-//   - ChargingProfile: complete charging profile with schedule and metadata
-//   - ListVersionNumber: version number for the local authorization list
+// [CiString20Type], [CiString25Type], [CiString50Type], [CiString255Type],
+// and [CiString500Type] are case-insensitive strings restricted to
+// printable ASCII (32–126) with their respective maximum lengths.
 //
-// All types enforce validation at construction time and are designed for
-// thread-safe concurrent use with immutable fields and value receivers.
-// Zero external dependencies — uses only Go standard library.
+// [DateTime] is an RFC 3339 timestamp that must already be in UTC.
+//
+// [Integer] is a validated uint16 value in the range 0–65535.
+//
+// # Enumeration types
+//
+// [AuthorizationStatus], [AvailabilityStatus], [AvailabilityType],
+// [CancelReservationStatus], [ChargePointErrorCode], [ChargePointStatus],
+// [ChargingProfileKindType], [ChargingProfilePurposeType],
+// [ChargingProfileStatus], [ChargingRateUnit], [ClearCacheStatus],
+// [ClearChargingProfileStatus], [ConfigurationStatus],
+// [DataTransferStatus], [DiagnosticsStatus], [FirmwareStatus],
+// [GetCompositeScheduleStatus], [Location], [Measurand],
+// [MessageTrigger], [Phase], [ReadingContext], [RecurrencyKindType],
+// [RegistrationStatus], [RemoteStartTransactionStatus],
+// [RemoteStopTransactionStatus], [ReservationStatus], [ResetStatus],
+// [ResetType], [StopReason], [TriggerMessageStatus], [UnlockStatus],
+// [UpdateStatus], [UpdateType], [UnitOfMeasure], and [ValueFormat].
+//
+// Every enumeration exposes IsValid() bool and String() string methods.
+//
+// # Composite types
+//
+// [IDToken] wraps a [CiString20Type] for use as an identifier token.
+//
+// [IDTagInfo] carries authorization status with optional expiry date
+// and parent tag. Use [IDTagInfo.WithExpiryDate] and
+// [IDTagInfo.WithParentIDTag] to set optional fields after construction.
+//
+// [SampledValue] represents a single meter value sample; [MeterValue]
+// groups sampled values under a single UTC timestamp.
+//
+// [AuthorizationData] is an entry in the local authorization list.
+//
+// [KeyValue] is a configuration key-value pair used in
+// GetConfiguration.conf responses.
+//
+// [ChargingSchedulePeriod], [ChargingSchedule], and [ChargingProfile]
+// model the OCPP smart-charging hierarchy.
+//
+// [ListVersionNumber] tracks the version of the local authorization
+// list. The constants [ListVersionUnsupported] (-1) and
+// [ListVersionEmpty] (0) have dedicated predicates on the type.
+//
+// # Errors
+//
+// All validation failures wrap [ErrInvalidValue] or [ErrEmptyValue],
+// enabling errors.Is checks while carrying diagnostic context.
 package ocpp16types

@@ -29,3 +29,38 @@ func ExampleNewIDTagInfo_invalid() {
 	// Output:
 	// NewIDTagInfo: AuthorizationStatus: invalid value
 }
+
+func ExampleIDTagInfo_WithExpiryDate() {
+	info, err := st.NewIDTagInfo(st.AuthorizationStatusAccepted)
+	if err != nil {
+		fmt.Println(err)
+
+		return
+	}
+
+	dt, _ := st.NewDateTime("2027-12-31T23:59:59Z")
+	info = info.WithExpiryDate(dt)
+
+	fmt.Println(info.Status().String())
+	fmt.Println(info.ExpiryDate().String())
+	// Output:
+	// Accepted
+	// 2027-12-31T23:59:59Z
+}
+
+func ExampleIDTagInfo_WithParentIDTag() {
+	info, err := st.NewIDTagInfo(st.AuthorizationStatusAccepted)
+	if err != nil {
+		fmt.Println(err)
+
+		return
+	}
+
+	parentStr, _ := st.NewCiString20Type("PARENT-001")
+	parent := st.NewIDToken(parentStr)
+	info = info.WithParentIDTag(parent)
+
+	fmt.Println(info.ParentIDTag().String())
+	// Output:
+	// PARENT-001
+}
