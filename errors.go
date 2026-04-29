@@ -65,9 +65,33 @@ const (
 )
 
 var (
-	// ErrEmptyValue is a sentinel error for empty field validation.
+	// ErrEmptyValue is the sentinel error for empty-field validation failures.
+	//
+	// What it means: the input was absent (empty string or nil) when a
+	// non-empty value was required by the OCPP 1.6 specification.
+	//
+	// When to use it: check errors.Is(err, ErrEmptyValue) to detect this
+	// specific class of failure and surface a meaningful message to the caller.
+	//
+	// What it is not: a general "not found" or "nil pointer" error. It is
+	// only returned by New* constructors in this package.
+	//
+	// See also: [ErrInvalidValue] for validation failures where the value was
+	// present but did not satisfy specification constraints.
 	ErrEmptyValue = errors.New("value cannot be empty")
 
-	// ErrInvalidValue is a sentinel error for invalid field validation.
+	// ErrInvalidValue is the sentinel error for constraint-violation failures.
+	//
+	// What it means: the input was present but failed a specification
+	// constraint — wrong format, out of range, or an unrecognized enumeration
+	// value.
+	//
+	// When to use it: check errors.Is(err, ErrInvalidValue) to detect this
+	// class of failure independently of the diagnostic message text.
+	//
+	// What it is not: a parse error or a transport error. It is only returned
+	// by New* constructors and IsValid() callers in this package.
+	//
+	// See also: [ErrEmptyValue] for failures caused by a missing value.
 	ErrInvalidValue = errors.New("invalid value")
 )

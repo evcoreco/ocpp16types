@@ -13,8 +13,22 @@ const (
 	dateTimeField    = "value"
 )
 
-// DateTime represents an OCPP 1.6–compliant RFC3339 timestamp in UTC.
-// Inputs must already be expressed in UTC; non-UTC offsets are rejected.
+// DateTime is an OCPP 1.6–compliant RFC 3339 timestamp in UTC.
+//
+// What it means: a moment in time expressed as a UTC RFC 3339 string, as
+// required by the OCPP 1.6 specification for all date-time fields. The value
+// is stored as a [time.Time] normalized to UTC.
+//
+// When to use it: expiry dates in [IDTagInfo], transaction start and stop
+// times, meter reading timestamps in [MeterValue], and any other OCPP field
+// the specification types as dateTime.
+//
+// What it is not: a timezone-aware or local-time value. Non-UTC offsets are
+// rejected at construction. It is not a duration or a time interval.
+//
+// See also: [MeterValue] embeds a DateTime timestamp; [IDTagInfo.WithExpiryDate]
+// accepts a DateTime; [ChargingProfile] accepts optional DateTime values for
+// ValidFrom and ValidTo.
 type DateTime struct {
 	value time.Time
 }

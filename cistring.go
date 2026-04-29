@@ -86,9 +86,23 @@ func (cis ciString) val() string {
 	return cis.value
 }
 
-// CiString20Type represents an OCPP 1.6 case-insensitive string with a maximum
-// length of 20 characters. The string must contain only printable ASCII
-// characters (32-126).
+// CiString20Type is an OCPP 1.6 case-insensitive string with a maximum length
+// of 20 characters.
+//
+// What it means: a bounded text field that OCPP 1.6 appendix 4 defines as
+// CiString20Type — printable ASCII only, max 20 characters.
+//
+// When to use it: identifier tokens, ICCID, IMSI, and any other OCPP field
+// the specification types as CiString20.
+//
+// What it is not: a general-purpose string. Empty values, Unicode characters,
+// and strings longer than 20 characters are rejected at construction. The
+// "case-insensitive" label is a specification convention; this type does not
+// perform case folding.
+//
+// See also: [IDToken] wraps CiString20Type; [NewCiString25Type],
+// [NewCiString50Type], [NewCiString255Type], [NewCiString500Type] for other
+// length variants; [ErrEmptyValue] and [ErrInvalidValue] for error classes.
 type CiString20Type struct {
 	value ciString
 }
@@ -111,9 +125,20 @@ func (c CiString20Type) String() string {
 	return c.value.val()
 }
 
-// CiString25Type represents an OCPP 1.6 case-insensitive string with a maximum
-// length of 25 characters. The string must contain only printable ASCII
-// characters (32-126).
+// CiString25Type is an OCPP 1.6 case-insensitive string with a maximum length
+// of 25 characters.
+//
+// What it means: a bounded text field that OCPP 1.6 appendix 4 defines as
+// CiString25Type — printable ASCII only, max 25 characters.
+//
+// When to use it: charge point serial numbers, meter type, meter serial
+// number, and any other OCPP field the specification types as CiString25.
+//
+// What it is not: a general-purpose string. Empty values, Unicode characters,
+// and strings longer than 25 characters are rejected at construction.
+//
+// See also: [CiString20Type] for the 20-character variant; [CiString50Type],
+// [CiString255Type], [CiString500Type] for longer variants.
 type CiString25Type struct {
 	value ciString
 }
@@ -136,9 +161,21 @@ func (c CiString25Type) String() string {
 	return c.value.val()
 }
 
-// CiString50Type represents an OCPP 1.6 case-insensitive string with a maximum
-// length of 50 characters. The string must contain only printable ASCII
-// characters (32-126).
+// CiString50Type is an OCPP 1.6 case-insensitive string with a maximum length
+// of 50 characters.
+//
+// What it means: a bounded text field that OCPP 1.6 appendix 4 defines as
+// CiString50Type — printable ASCII only, max 50 characters.
+//
+// When to use it: firmware version, configuration keys, and any other OCPP
+// field the specification types as CiString50.
+//
+// What it is not: a general-purpose string. Empty values, Unicode characters,
+// and strings longer than 50 characters are rejected at construction.
+//
+// See also: [KeyValue] uses CiString50Type for its key field; [CiString20Type],
+// [CiString25Type] for shorter variants; [CiString255Type], [CiString500Type]
+// for longer variants.
 type CiString50Type struct {
 	value ciString
 }
@@ -161,9 +198,20 @@ func (c CiString50Type) String() string {
 	return c.value.val()
 }
 
-// CiString255Type represents an OCPP 1.6 case-insensitive string with a maximum
-// length of 255 characters. The string must contain only printable ASCII
-// characters (32-126).
+// CiString255Type is an OCPP 1.6 case-insensitive string with a maximum length
+// of 255 characters.
+//
+// What it means: a bounded text field that OCPP 1.6 appendix 4 defines as
+// CiString255Type — printable ASCII only, max 255 characters.
+//
+// When to use it: any OCPP field the specification types as CiString255 —
+// typically longer descriptive or diagnostic text fields.
+//
+// What it is not: a general-purpose string. Empty values, Unicode characters,
+// and strings longer than 255 characters are rejected at construction.
+//
+// See also: [CiString500Type] for the 500-character variant; [CiString50Type]
+// for shorter text fields.
 type CiString255Type struct {
 	value ciString
 }
@@ -186,9 +234,21 @@ func (c CiString255Type) String() string {
 	return c.value.val()
 }
 
-// CiString500Type represents an OCPP 1.6 case-insensitive string with a maximum
-// length of 500 characters. The string must contain only printable ASCII
-// characters (32-126).
+// CiString500Type is an OCPP 1.6 case-insensitive string with a maximum length
+// of 500 characters.
+//
+// What it means: a bounded text field that OCPP 1.6 appendix 4 defines as
+// CiString500Type — printable ASCII only, max 500 characters.
+//
+// When to use it: configuration values, raw meter reading strings, and any
+// other OCPP field the specification types as CiString500.
+//
+// What it is not: a general-purpose string. Empty values, Unicode characters,
+// and strings longer than 500 characters are rejected at construction.
+//
+// See also: [KeyValue] uses CiString500Type for its value field; [SampledValue]
+// uses CiString500Type for the raw measurement string; [CiString255Type] for
+// the 255-character variant.
 type CiString500Type struct {
 	value ciString
 }

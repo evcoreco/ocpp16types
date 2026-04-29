@@ -16,7 +16,22 @@ const (
 	integerMin = 0
 )
 
-// Integer represents an OCPP 1.6 compliant integer value (uint16).
+// Integer is an OCPP 1.6 integer primitive — a validated uint16 in the range
+// 0–65535, as defined in OCPP 1.6 appendix 4.
+//
+// What it means: the unsigned 16-bit integer type used throughout OCPP 1.6
+// for fields that are constrained to non-negative whole numbers within the
+// uint16 range.
+//
+// When to use it: stack levels, connector identifiers, and any other OCPP
+// field the specification types as integer.
+//
+// What it is not: a general Go int. Negative values and values above 65535
+// are rejected at construction. It is not a counter or sequence number
+// managed by this package.
+//
+// See also: [ChargingSchedulePeriod] uses Integer for StartPeriod;
+// [ChargingProfile] uses Integer for StackLevel and TransactionID.
 type Integer struct {
 	value uint16
 }

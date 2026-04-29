@@ -5,8 +5,22 @@ import "fmt"
 // Compile-time interface verification.
 var _ fmt.Stringer = AuthorizationStatus("")
 
-// AuthorizationStatus represents the status in a response to an Authorize
-// request.
+// AuthorizationStatus is the OCPP 1.6 authorization status enumeration,
+// carried in the idTagInfo response to an authorization request.
+//
+// What it means: the Central System's decision about a presented idToken —
+// whether the charge point should allow or deny the charging session.
+//
+// When to use it: populate the required status field when constructing
+// [IDTagInfo] via [NewIDTagInfo]. Call [AuthorizationStatus.IsValid] before
+// accepting a status string received from an external source.
+//
+// What it is not: a transport-level result code or an HTTP status. It is
+// scoped exclusively to OCPP authorization responses.
+//
+// See also: [IDTagInfo] embeds AuthorizationStatus as its required field;
+// [IDToken] is the token being evaluated; [AuthorizationData] pairs a token
+// with an AuthorizationStatus in the local authorization cache.
 type AuthorizationStatus string
 
 // AuthorizationStatus enumeration values as defined in OCPP 1.6.

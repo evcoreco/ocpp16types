@@ -7,8 +7,24 @@ import (
 // Compile-time interface verification.
 var _ fmt.Stringer = (*IDTagInfo)(nil)
 
-// IDTagInfo contains status information about an identifier.
-// It is returned in Authorize, StartTransaction, and StopTransaction responses.
+// IDTagInfo is the OCPP 1.6 idTagInfo data type — the Central System's
+// authorization response for a presented idToken.
+//
+// What it means: a validated authorization record carrying a required
+// [AuthorizationStatus] and optional expiry date and parent tag. It
+// represents what the Central System says about a specific [IDToken].
+//
+// When to use it: Authorize.conf, StartTransaction.conf, and
+// StopTransaction.req. Construct with [NewIDTagInfo], then attach optional
+// fields using [IDTagInfo.WithExpiryDate] and [IDTagInfo.WithParentIDTag].
+//
+// What it is not: the token being authorized. The token itself is [IDToken].
+// IDTagInfo is the response; IDToken is the input.
+//
+// See also: [AuthorizationStatus] is the required field; [IDToken] is the
+// token that triggers the authorization check; [DateTime] is used for the
+// optional expiry date; [AuthorizationData] stores IDTagInfo in the local
+// authorization cache.
 type IDTagInfo struct {
 	status      AuthorizationStatus
 	expiryDate  *DateTime // Optional
