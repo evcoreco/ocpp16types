@@ -1,3 +1,3 @@
-module github.com/aasanchez/ocpp16types
+module github.com/evcoreco/ocpp16types
 
 go 1.25

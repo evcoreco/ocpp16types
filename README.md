@@ -1,8 +1,8 @@
 # ocpp16types
 
-[![CI](https://github.com/aasanchez/ocpp16types/actions/workflows/ci.yml/badge.svg)](https://github.com/aasanchez/ocpp16types/actions/workflows/ci.yml)
+[![CI](https://github.com/evcoreco/ocpp16types/actions/workflows/ci.yml/badge.svg)](https://github.com/evcoreco/ocpp16types/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/aasanchez/ocpp16types/branch/master/graph/badge.svg)](https://codecov.io/gh/aasanchez/ocpp16types)
-[![Go Reference](https://pkg.go.dev/badge/github.com/aasanchez/ocpp16types.svg)](https://pkg.go.dev/github.com/aasanchez/ocpp16types)
+[![Go Reference](https://pkg.go.dev/badge/github.com/evcoreco/ocpp16types.svg)](https://pkg.go.dev/github.com/evcoreco/ocpp16types)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Strictly validated Go types for the **Open Charge Point Protocol (OCPP) 1.6** specification. This package is the single source of truth for shared ocpp types consumed by other modules in the OCPP ecosystem.
@@ -16,7 +16,7 @@ Strictly validated Go types for the **Open Charge Point Protocol (OCPP) 1.6** sp
 ## Installation
 
 ```bash
-go get github.com/aasanchez/ocpp16types
+go get github.com/evcoreco/ocpp16types@v1.0.1
 ```
 
 ## Design Principles
@@ -104,7 +104,7 @@ All enumerations expose an `IsValid() bool` method and a `String() string` metho
 This package is imported with the `types` alias across the EVCore ecosystem (e.g., in `ocpp16messages`):
 
 ```go
-import types "github.com/aasanchez/ocpp16types"
+import types "github.com/evcoreco/ocpp16types"
 ```
 
 ### Creating a CiString
@@ -164,7 +164,7 @@ if errors.Is(err, types.ErrInvalidValue) {
 This is how `ocpp16messages/authorize` uses `ocpp16types` to build a validated OCPP message:
 
 ```go
-import types "github.com/aasanchez/ocpp16types"
+import types "github.com/evcoreco/ocpp16types"
 
 // ReqMessage represents an OCPP 1.6 Authorize.req message.
 type ReqMessage struct {
@@ -188,7 +188,7 @@ func Req(input ReqInput) (ReqMessage, error) {
 Building a response with validated status and optional fields:
 
 ```go
-import types "github.com/aasanchez/ocpp16types"
+import types "github.com/evcoreco/ocpp16types"
 
 // ConfMessage represents an OCPP 1.6 Authorize.conf message.
 type ConfMessage struct {
@@ -230,7 +230,7 @@ func Conf(input ConfInput) (ConfMessage, error) {
 Shows how types compose into a full OCPP message with required and optional fields:
 
 ```go
-import types "github.com/aasanchez/ocpp16types"
+import types "github.com/evcoreco/ocpp16types"
 
 // ReqMessage represents an OCPP 1.6 BootNotification.req message.
 type ReqMessage struct {
@@ -300,7 +300,7 @@ Godoc is the primary documentation surface. Run a local pkgsite server:
 make pkgsite
 ```
 
-This starts a server at `http://localhost:8080/github.com/aasanchez/ocpp16types`.
+This starts a server at `http://localhost:8080/github.com/evcoreco/ocpp16types`.
 
 ## Contributing
 
