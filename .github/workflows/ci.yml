@@ -2,50 +2,62 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
-    branches:
-      - master
+    branches: [master]
+
 
 jobs:
-  test:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
-          go-version: '1.25.8'
+          go-version-file: go.mod
+          cache: true
 
-      - name: Run go vet
+      - name: go vet
         run: go vet ./...
 
-      - name: Run staticcheck
+      - name: staticcheck
         uses: dominikh/staticcheck-action@v1
         with:
           version: latest
 
-      - name: Run golangci-lint
+      - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
           version: latest
+          args: --config golangci.yml
 
-      - name: Run unit tests with coverage
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Unit tests with coverage
         run: |
           mkdir -p reports
           go test -mod=readonly \
             -coverpkg=$(go list ./... | grep -v -e /tests -e tests_ | tr '\n' ',' | sed 's/,$//') \
             -coverprofile=reports/coverage.out \
-            -v ./...
+            -v ./... | tee reports/test.txt
+          go tool cover -func=reports/coverage.out | tail -1 | awk -F" " '{print $NF}'
 
-      - name: Run example tests
+      - name: Example tests
         run: go test -mod=readonly -v -run '^Example' ./...
 
-      - name: Run race detector
-        run: go test -race ./...
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v6
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          files: reports/coverage.out
-          fail_ci_if_error: false
+          name: reports
+          path: reports/
+
